@@ -4,95 +4,100 @@
  *
  * @format
  */
-
-import React from 'react';
+import React, { useEffect } from 'react';
+import { enableScreens } from 'react-native-screens';
+import {GestureHandlerRootView} from 'react-native-gesture-handler'
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   useColorScheme,
-  View,
 } from 'react-native';
 
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  NavigationContainer,
+  DefaultTheme,
+} from '@react-navigation/native';
+
+import BootSplash from 'react-native-bootsplash';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SignInScreen from './src/pages/SignIn'
+import HomeScreen from './src/pages/Home'
+import LocationSearch from './src/pages/LocationSearchScreen'
+import RideTimeScreen from './src/pages/RideTimeScreen'
+import RideSelectScreen from './src/pages/RideSelect'
+import CouponScreen from './src/pages/CuponScreen'
+import FareSheetScreen from './src/pages/FareSheetScreen'
+import ProfileScreen from './src/pages/ProfileScreen'
+import RideHistory from './src/pages/RideHistory'
+import { Provider } from 'react-redux'
+import store from './src/redux/store'
+import Geolocation from '@react-native-community/geolocation';
+import UpcomingRidesScreen from './src/pages/UpcomingRides'
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: 'rgb(255, 255, 255)',
+  },
+};
+
+Geolocation.setRNConfiguration({
+  skipPermissionRequests: false,
+  authorizationLevel: 'auto',
+  enableBackgroundLocationUpdates: true,
+  locationProvider: 'auto',
+});
+const Stack = createNativeStackNavigator();
 
 type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  title: string;}>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  navigator.geolocation = require('@react-native-community/geolocation');
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const theme = useColorScheme()
+
+  useEffect(() => {
+    enableScreens(true)
+  }, []);
+
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <Provider store={store}>
+    <GestureHandlerRootView>
+    <SafeAreaView style={[{flex:1}]}>
+        <NavigationContainer 
+        onReady={() => BootSplash.hide({fade: true})} 
+        theme={MyTheme}
+         >
+        <StatusBar
+          barStyle={useColorScheme()==='dark' ? 'dark-content' : 'dark-content'}
+          backgroundColor={'#fff'} 
+          />
+          <Stack.Navigator initialRouteName='Home' 
+          screenOptions={{animation: 'slide_from_right', presentation: 'modal'}}
+           >
+             <Stack.Screen name="SignIn" component={SignInScreen} options={{headerShown: false, animation:""}}/>
+             <Stack.Screen name="SignUp" component={SignInScreen} options={{headerShown: false}}/>
+             <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false, navigationBarColor:'white'}}/>
+             <Stack.Screen name="LocationSearch" component={LocationSearch} options={{headerShown: false}}/>
+             <Stack.Screen name="RideTimeScreen" component={RideTimeScreen} options={{headerShown: false}}/>
+             <Stack.Screen name="RideSelect" component={RideSelectScreen} options={{headerShown: false}}/>
+             <Stack.Screen name="CouponScreen" component={CouponScreen} options={{headerShown: false}}/>
+             <Stack.Screen name="FareSheetScreen" component={FareSheetScreen} options={{headerShown: false}}/>
+             <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false}}/>
+             <Stack.Screen name="RideHistory" component={RideHistory} options={{headerShown: false}}/>
+             <Stack.Screen name="UpcomingRidesScreen" component={UpcomingRidesScreen} options={{headerShown: false}}/>
+          </Stack.Navigator>
+        </NavigationContainer>
     </SafeAreaView>
+
+    </GestureHandlerRootView>
+    </Provider>
   );
 }
 
