@@ -45,8 +45,13 @@ const menuData = [
     },
     {
         icon: 'https://cdn-icons-png.freepik.com/512/2893/2893421.png',
-        text:'App Settings',
-        location: 'ProfileScreen',
+        text:'Themes',
+        location: 'ThemesScreen',
+    },
+    {
+        icon: 'https://cdn-icons-png.freepik.com/512/2893/2893421.png',
+        text:'Languages',
+        location: 'LaguageScreen',
     },
 
 ]
@@ -119,7 +124,7 @@ const ProfileAndMenu = () => {
                                 style={{borderRadius:70, backgroundColor:'#ffef75'}}
                                 />
                     </View>
-                    <View style={[styles.sectionContainer, {padding:'7%', flexGrow:1, justifyContent:'space-around'}]}>
+                    <View style={[styles.sectionContainer, {padding:'7%', flexGrow:1, justifyContent:'space-between', marginBottom:40}]}>
                          {menuData.map((item, index)=>{
                              return <TouchableOpacity style={styles.menuOption}  key={index}
                                             onPress={()=>handleNavigate(item.location)}>
@@ -139,7 +144,7 @@ const ProfileAndMenu = () => {
             </Animated.View>
 
 
-            <View style={{flexDirection:'row', gap:10, flex:1, justifyContent:'space-between', marginTop:'10%', paddingHorizontal:'3%'}}>
+            <View style={{flexDirection:'row', gap:10, flex:1, justifyContent:'space-between', marginTop:'5%', paddingHorizontal:'3%'}}>
             <Animated.View sharedTransitionTag="menuBurger">
             <TouchableOpacity style={{padding:5, backgroundColor:'white', borderRadius:30, height:30, elevation:10, marginTop:15}}
               onPress={openDrawer}

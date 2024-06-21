@@ -35,6 +35,7 @@ import { Provider } from 'react-redux'
 import store from './src/redux/store'
 import Geolocation from '@react-native-community/geolocation';
 import UpcomingRidesScreen from './src/pages/UpcomingRides'
+import ThemesScreen from './src/pages/Themes'
 
 const MyTheme = {
   ...DefaultTheme,
@@ -92,6 +93,7 @@ function App(): React.JSX.Element {
              <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false}}/>
              <Stack.Screen name="RideHistory" component={RideHistory} options={{headerShown: false}}/>
              <Stack.Screen name="UpcomingRidesScreen" component={UpcomingRidesScreen} options={{headerShown: false}}/>
+             <Stack.Screen name="ThemesScreen" component={ThemesScreen} options={{headerShown: false}}/>
           </Stack.Navigator>
         </NavigationContainer>
     </SafeAreaView>

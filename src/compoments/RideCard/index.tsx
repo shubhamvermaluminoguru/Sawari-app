@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import Animated, {useSharedValue, WITH} from "react-native-reanimated";
+import Animated, {useSharedValue,} from "react-native-reanimated";
 const RideCard =()=>{
 
 
