@@ -3,10 +3,8 @@ import { Image, View, Text, StyleSheet, StatusBar, BackHandler } from "react-nat
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Animated, { useSharedValue, withSpring, withTiming } from "react-native-reanimated";
-import changeNavigationBarColor, {
-    hideNavigationBar,
-    showNavigationBar,
-  } from 'react-native-navigation-bar-color';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import {useThemeContext} from '../../../App'
 
 import { Dimensions } from "react-native";
 const screenHeight = Dimensions.get('screen').height
@@ -60,6 +58,7 @@ const ProfileAndMenu = () => {
     const width = useSharedValue(0);
     const height = useSharedValue(screenHeight);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const {theme} = useThemeContext();
     
     const openDrawer = () => {
         width.value = withSpring(screenWidth, { damping: 20 })
@@ -102,12 +101,62 @@ const ProfileAndMenu = () => {
         changeNavigationBarColor('transparent')
     },[])
     
+    const styles=StyleSheet.create({
+        sideDrawer:{
+            position:'absolute',
+            top:0,
+            left:0,
+            height:screenHeight,
+            backgroundColor:theme.drawer?.bg,
+            flexDirection:'column',
+            zIndex:100,
+            overflow:'hidden',
+            gap:20,
+            paddingTop:'10%',
+            paddingBottom:'5%'
+        },
+        menuOption:{
+            backgroundColor:theme.drawer.menuOptionBg,
+            flexGrow:1,
+            height:'10%',
+            alignItems:'center',
+            paddingLeft:'5%',
+            borderRadius:20,
+            flexDirection:'row',
+            gap:10
+        },
+        closeButton:{
+            backgroundColor:'#ff672e',
+            borderRadius:30,
+            width: 40,
+            height:40,
+            justifyContent:'center',
+            alignItems:'center',
+            marginLeft:'auto',
+            marginRight:'5%'
+    
+        },
+        sectionContainer:{
+            marginHorizontal:'5%',
+            backgroundColor:theme.drawer.sectionContainer,
+            padding:'3%',
+            borderRadius: 40,
+            overflow:'hidden',
+        },
+        textBold:{
+            fontFamily:'Roboto-Black',
+            color:theme.textClr2,
+            fontSize:14
+    
+        }
+    })
+    
 
     return (
         <View style={{position:'absolute', width:'100%',  flexDirection:'row', zIndex:10, gap:10, 
         }}>
             <Animated.View style={[styles.sideDrawer,{width: width, height:height}]}>
-            {isDrawerOpen && <StatusBar barStyle={'dark-content'} backgroundColor={'#ffef75'} />}
+            {isDrawerOpen && <StatusBar barStyle={theme.type === 'dark' ? 'light-content' : 'dark-content'} backgroundColor={'#ffef75'} />}
                 {/* <View style={{backgroundColor:'#fff', height:'100%', width:'50%', gap:10}}> */}
                     <TouchableOpacity style={styles.closeButton} onPress={()=>closeDrawer()}>
                         <Text>X</Text>
@@ -144,12 +193,14 @@ const ProfileAndMenu = () => {
             </Animated.View>
 
 
-            <View style={{flexDirection:'row', gap:10, flex:1, justifyContent:'space-between', marginTop:'5%', paddingHorizontal:'3%'}}>
+            <View style={{flexDirection:'row', gap:10, flex:1, justifyContent:'space-between', marginTop:'8%', paddingHorizontal:'3%'}}>
             <Animated.View sharedTransitionTag="menuBurger">
-            <TouchableOpacity style={{padding:5, backgroundColor:'white', borderRadius:30, height:30, elevation:10, marginTop:15}}
+            <TouchableOpacity style={{padding:5, backgroundColor:theme.sideDrawerBg, borderRadius:30, height:30, elevation:10, marginTop:15}}
               onPress={openDrawer}
             >
-                <Image source={{uri:'https://cdn4.iconfinder.com/data/icons/navigation-40/24/hamburger-menu-512.png'}} height={20} width={20}></Image>
+                <Image source={{uri:'https://static.thenounproject.com/png/478829-200.png'}} height={20} width={20}
+                 style={{tintColor: theme.type ==='dark'? 'white':'black'}}
+                ></Image>
             </TouchableOpacity>
             </Animated.View>
             <TouchableOpacity onPress={()=>navigation.navigate('ProfileScreen' as never)} style={{marginStart:'auto'}}>
@@ -168,55 +219,6 @@ const ProfileAndMenu = () => {
     );
 };
 
-const styles=StyleSheet.create({
-    sideDrawer:{
-        position:'absolute',
-        top:0,
-        left:0,
-        height:screenHeight,
-        backgroundColor:'#ffef75',
-        flexDirection:'column',
-        zIndex:100,
-        overflow:'hidden',
-        gap:20,
-        paddingTop:'10%',
-        paddingBottom:'5%'
-    },
-    menuOption:{
-        backgroundColor:'#e8e8e8',
-        flexGrow:1,
-        height:'10%',
-        alignItems:'center',
-        paddingLeft:'5%',
-        borderRadius:20,
-        flexDirection:'row',
-        gap:10
-    },
-    closeButton:{
-        backgroundColor:'#ff672e',
-        borderRadius:30,
-        width: 40,
-        height:40,
-        justifyContent:'center',
-        alignItems:'center',
-        marginLeft:'auto',
-        marginRight:'5%'
-
-    },
-    sectionContainer:{
-        marginHorizontal:'5%',
-        backgroundColor:'#fff',
-        padding:'3%',
-        borderRadius: 40,
-        overflow:'hidden',
-    },
-    textBold:{
-        fontFamily:'Roboto-Black',
-        color:'#454545',
-        fontSize:14
-
-    }
-})
 
 export default ProfileAndMenu
 

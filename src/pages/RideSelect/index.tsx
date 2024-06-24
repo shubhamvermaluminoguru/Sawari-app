@@ -8,6 +8,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import ProfileAndMenu from "../../compoments/ProfileAndMenu";
+import { useThemeContext } from "../../../App";
 const { width, height } = Dimensions.get('window');
 
 const data = [{
@@ -46,16 +47,53 @@ interface RideData {
 const RideSelectScreen =()=>{
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const {theme} = useThemeContext();
     const handleRideSelect = (ride: RideData) => {
       dispatch({type: 'SET_TYPE', payload: ride.type});
       dispatch({type: 'SET_PRICE', payload: ride.rate});
       navigation.navigate('CouponScreen' as never)
     }
 
+
+const styles = StyleSheet.create({
+  locationForm :{
+    flex:1, 
+    backgroundColor:'rgba(255,255,255, 0.3)', 
+    width:'100%', 
+    justifyContent:'space-around', 
+    alignItems:'center', 
+    padding:20, 
+    borderRadius:60},
+  button:{
+    backgroundColor:'#ffbb00', 
+    borderRadius:10, 
+    paddingVertical:10,
+    paddingHorizontal: 20,
+    flexDirection:'row',
+    alignItems:'center',
+    gap:10
+  },
+  buttonText:{
+    fontFamily:'Roboto-Black', 
+    fontSize:20, 
+    color:'black'
+  },
+  card:{
+      flex: 1, 
+      backgroundColor:theme.transparentColor, 
+      width:'100%', 
+      padding: 30, 
+      borderRadius:60,
+      justifyContent:'center',
+      alignItems:'center',
+      gap:40
+  }
+})
+
     return(
         <View style={{flex:1, }}>
           <ProfileAndMenu/>
-         <ImageBackground src={'https://camo.githubusercontent.com/2931b1e56daacb6c9a5c6cb8f751369385978b9d6ba9908bac2a4d5f7b6ef4fa/68747470733a2f2f322e62702e626c6f6773706f742e636f6d2f2d574f70483738393364526b2f5733527372626f476678492f41414141414141414356552f767a6b39683975526262415777485633366a5455644b4f555552795946322d6167434c63424741732f73313630302f73637265656e73686f74362e706e67'} 
+         <ImageBackground src={theme.mapBg} 
          style={{flex:1, alignItems:'center', backgroundColor:'black'}}
          resizeMode={'cover'}
          >
@@ -78,7 +116,7 @@ const RideSelectScreen =()=>{
                         overlayColor="red"
                         style={{flexDirection:'column', alignItems:'center', justifyContent:'space-around', width:'100%', height:'100%'}}
                     > */}
-                        <Text style={{fontSize:28, color:'#454545', fontWeight:700, fontFamily:'Roboto-Black', }}>{item.type}</Text>
+                        <Text style={{fontSize:28, color:theme.textClr1, fontWeight:700, fontFamily:'Roboto-Black', }}>{item.type}</Text>
                         <View style={{width:'95%', height:'40%', borderRadius:20, overflow:'visible'}}>
                             <View style={{width:'100%', height:'100%', backgroundColor:'#ffbb00', borderRadius:20, overflow:'visible'}}>
                             </View>
@@ -90,14 +128,14 @@ const RideSelectScreen =()=>{
                                         aspectRatio: 16/9,}}/>
                         </View>
                         <View style={{gap:30}}>
-                            <Text style={{fontSize:20, color:'#454545',fontFamily:'Roboto-Black', }}>Rs. {item.rate}/ Km</Text>
+                            <Text style={{fontSize:20, color:theme.textClr1,fontFamily:'Roboto-Black', }}>Rs. {item.rate}/ Km</Text>
                            <View style={{flexDirection:'row', alignItems:'center', flexWrap:'wrap', gap:20}}>
                             {item.brands.map((brand, index)=>{
                                 return <Text key={index} style={{fontSize:16, color:'#454545',fontFamily:'Roboto-Black', paddingHorizontal:25, paddingVertical:10, backgroundColor:'#ffa', borderRadius:5}}>{brand}</Text>
                             })}
                            </View>
                         </View>
-                        <TouchableOpacity style={{...styles.button, backgroundColor:'black'}} onPress={()=>handleRideSelect(item)}>
+                        <TouchableOpacity style={{...styles.button, backgroundColor:theme.buttonBg}} onPress={()=>handleRideSelect(item)}>
                             <Text style={{...styles.buttonText, color:'white'}}>Select</Text>
                             </TouchableOpacity> 
                   {/* </BlurView> */}
@@ -112,61 +150,6 @@ const RideSelectScreen =()=>{
 }
 
 
-const styles = StyleSheet.create({
-    locationForm :{
-      flex:1, 
-      backgroundColor:'rgba(255,255,255, 0.3)', 
-      width:'100%', 
-      justifyContent:'space-around', 
-      alignItems:'center', 
-      padding:20, 
-      borderRadius:60},
-    inputContainer: {
-      backgroundColor:'white', 
-      height:'25%', 
-      width:'100%', 
-      borderRadius:40,
-      paddingLeft: 20,
-      paddingTop:20
-    },
-    label: {
-      fontFamily:'Roboto-Medium', 
-      fontSize:16, 
-      color:'#454545',
-      fontWeight:'500',
-    },
-    input: {
-      fontFamily:'Roboto', 
-      fontSize:20, 
-      color:'black',
-      fontWeight:'700',
-      flex:1,
-    },
-    button:{
-      backgroundColor:'#ffbb00', 
-      borderRadius:10, 
-      paddingVertical:10,
-      paddingHorizontal: 20,
-      flexDirection:'row',
-      alignItems:'center',
-      gap:10
-    },
-    buttonText:{
-      fontFamily:'Roboto-Black', 
-      fontSize:20, 
-      color:'black'
-    },
-    card:{
-        flex: 1, 
-        backgroundColor:"rgba(255,255, 255, 0.8)", 
-        width:'100%', 
-        padding: 30, 
-        borderRadius:60,
-        justifyContent:'center',
-        alignItems:'center',
-        gap:40
-    }
-})
 
 export default RideSelectScreen
 

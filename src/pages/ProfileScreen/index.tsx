@@ -5,13 +5,54 @@ import TextInputV1 from "../../compoments/TextInputV1";
 import { useNavigation } from '@react-navigation/native';
 import Animated from "react-native-reanimated";
 
+import {useThemeContext} from '../../../App'
+
 const Profile = () => {
     const [userInfo, setUserInfo] = useState({})
     const navigation =useNavigation();
+    const {theme} = useThemeContext();
 
+
+const styles= StyleSheet.create({
+    pageContainer:{
+        flex:1,
+        zIndex:2000,
+        backgroundColor: theme.secondary
+    },
+    pageContent:{
+        flex:1,
+        alignItems:'center', 
+        width:'100%',
+        gap:32,
+        paddingVertical:30,
+        marginTop:30,
+    },
+    titleText:{
+        fontFamily:'Roboto-Black', 
+        fontSize:23, 
+        color:theme.textClr2,
+    },
+    button:{
+      backgroundColor:'#3f3f3f', 
+      borderRadius:15, 
+      paddingVertical:10,
+      paddingHorizontal: 20,
+      flexDirection:'row',
+      alignItems:'center',
+      justifyContent:'center',
+      gap:10,
+      height:70,
+      width:'100%'
+    },
+    buttonText:{
+      fontFamily:'Roboto-Black', 
+      fontSize:20, 
+      color:'white',
+    }
+})
     return (
         <View style={styles.pageContainer}>
-            <AnimatedBg/>
+            <AnimatedBg backgroundColor={theme.secondary}/>
             <View style={styles.pageContent}>
                 <TouchableOpacity style={{position:'absolute', top:30, left:20, backgroundColor:'#ddd', 
                 padding:7, paddingVertical:10, borderRadius:30}}
@@ -42,16 +83,19 @@ const Profile = () => {
                          placeholder="First Name"
                          value={''}
                          onChangeText={() => {}}
+                         borderColor={theme.textClr2}
                     />
                     <TextInputV1 
                          placeholder="Last Name"
                          value={''}
                          onChangeText={() => {}}
+                         borderColor={theme.textClr2}
                     />
                     <TextInputV1 
                          placeholder="Date of Birth"
                          value={''}
                          onChangeText={() => {}}
+                         borderColor={theme.textClr2}
                     />
                 </View>
                 <View style={{width:'100%',  padding:30, marginBottom:20, marginTop:60}}>
@@ -65,40 +109,5 @@ const Profile = () => {
     );
 };
 
-const styles= StyleSheet.create({
-    pageContainer:{
-        flex:1,zIndex:2000
-    },
-    pageContent:{
-        flex:1,
-        alignItems:'center', 
-        width:'100%',
-        gap:32,
-        paddingVertical:30,
-        marginTop:30
-    },
-    titleText:{
-        fontFamily:'Roboto-Black', 
-        fontSize:23, 
-        color:'#3a3a3a',
-    },
-    button:{
-      backgroundColor:'#3f3f3f', 
-      borderRadius:15, 
-      paddingVertical:10,
-      paddingHorizontal: 20,
-      flexDirection:'row',
-      alignItems:'center',
-      justifyContent:'center',
-      gap:10,
-      height:70,
-      width:'100%'
-    },
-    buttonText:{
-      fontFamily:'Roboto-Black', 
-      fontSize:20, 
-      color:'white',
-    }
-})
 
 export default Profile;

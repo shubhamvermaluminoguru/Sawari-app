@@ -1,3 +1,4 @@
+import bottomSheet from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheet";
 import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
@@ -5,6 +6,7 @@ interface Props {
     placeholder: string;
     value: string;
     onChangeText: (text: string) => void;
+    borderColor: string;
 }
 
 const TextInputV1 = (props :Props) => {
@@ -13,7 +15,7 @@ const TextInputV1 = (props :Props) => {
             <Text style={styles.placeholder}>{props.placeholder}</Text>
             <TextInput
                  placeholder={props.placeholder}
-                style={styles.input}
+                style={[styles.input,{borderColor:props.borderColor}]}
                 value={props.value}
                 onChangeText={props.onChangeText}
                 placeholderTextColor={'#777'}

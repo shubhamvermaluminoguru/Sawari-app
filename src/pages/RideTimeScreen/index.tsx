@@ -7,6 +7,7 @@ import { Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSelector, useDispatch } from 'react-redux';
+import { useThemeContext } from "../../../App";
 
 import ProfileAndMenu from "../../compoments/ProfileAndMenu";
 const { width, height } = Dimensions.get('window');
@@ -15,6 +16,7 @@ const { width, height } = Dimensions.get('window');
 const RideTimeScreen =()=>{
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {theme} = useThemeContext();  
   const sheetHeight = useSharedValue(Math.floor(height*0.3));
   const sheetWidth = useSharedValue(Math.floor(width*0.8));
   
@@ -23,6 +25,7 @@ const RideTimeScreen =()=>{
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [datePickerMode, setDatepickerMode]=useState('time');
   const [screenState, setScreenState]=useState('rideTimeSelect')
+  
 
 
   const handleRideBtn = (type:string) => {
@@ -64,11 +67,62 @@ const RideTimeScreen =()=>{
     setIsDateTimePickerVisible(false)
   }
 
-  console.log(date, time)
+
+
+const styles = StyleSheet.create({
+  locationForm :{
+    flex:1, 
+    backgroundColor:theme.transparentColor, 
+    width:'100%', 
+    alignItems:'center', 
+    padding:'10%', 
+    borderRadius:60,
+    gap:20,
+    justifyContent:'center'
+  },
+  label: {
+    fontFamily:'Roboto-Medium', 
+    fontSize:16, 
+    color:theme.textClr2,
+    fontWeight:'500',
+    textAlign:'left',
+    width:'95%'
+  },
+  input: {
+    fontFamily:'Roboto', 
+    fontSize:20, 
+    color:theme.textClr3,
+    fontWeight:'700',
+    backgroundColor:theme.primary,
+    width:'100%',
+    borderRadius:15,
+    paddingLeft:20,
+    height: 60
+  },
+  button:{
+    backgroundColor:theme.buttonBg, 
+    borderRadius:10, 
+    paddingVertical:10,
+    paddingHorizontal: 20,
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'center',
+    gap:10,
+    height:50,
+    width:'100%'
+  },
+  buttonText:{
+    fontFamily:'Roboto-Black', 
+    fontSize:16, 
+    color:'white'
+  }
+})
+
+
     return(
         <View style={{flex:1, }}>
           <ProfileAndMenu/>
-         <ImageBackground src={'https://camo.githubusercontent.com/2931b1e56daacb6c9a5c6cb8f751369385978b9d6ba9908bac2a4d5f7b6ef4fa/68747470733a2f2f322e62702e626c6f6773706f742e636f6d2f2d574f70483738393364526b2f5733527372626f476678492f41414141414141414356552f767a6b39683975526262415777485633366a5455644b4f555552795946322d6167434c63424741732f73313630302f73637265656e73686f74362e706e67'} 
+         <ImageBackground src={theme.mapBg} 
          style={{flex:1, alignItems:'center', backgroundColor:'black'}}
          resizeMode={'cover'}
          >
@@ -131,55 +185,5 @@ const RideTimeScreen =()=>{
           </ImageBackground>
         </View>)
 }
-
-
-const styles = StyleSheet.create({
-    locationForm :{
-      flex:1, 
-      backgroundColor:'rgba(255,255,255, 0.3)', 
-      width:'100%', 
-      alignItems:'center', 
-      padding:'10%', 
-      borderRadius:60,
-      gap:20,
-      justifyContent:'center'
-    },
-    label: {
-      fontFamily:'Roboto-Medium', 
-      fontSize:16, 
-      color:'#454545',
-      fontWeight:'500',
-      textAlign:'left',
-      width:'95%'
-    },
-    input: {
-      fontFamily:'Roboto', 
-      fontSize:20, 
-      color:'black',
-      fontWeight:'700',
-      backgroundColor:'white',
-      width:'100%',
-      borderRadius:15,
-      paddingLeft:20,
-      height: 60
-    },
-    button:{
-      backgroundColor:'#000', 
-      borderRadius:10, 
-      paddingVertical:10,
-      paddingHorizontal: 20,
-      flexDirection:'row',
-      alignItems:'center',
-      justifyContent:'center',
-      gap:10,
-      height:50,
-      width:'100%'
-    },
-    buttonText:{
-      fontFamily:'Roboto-Black', 
-      fontSize:16, 
-      color:'white'
-    }
-})
 
 export default RideTimeScreen

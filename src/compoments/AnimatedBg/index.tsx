@@ -3,7 +3,7 @@ import { View, StyleSheet, Dimensions } from "react-native";
 import Animated,{useSharedValue, withRepeat, withTiming, useAnimatedStyle} from "react-native-reanimated";
 const { width, height } = Dimensions.get('window');
 
-const AnimatedBg = () => {
+const AnimatedBg = (props: any) => {
    const offset = useSharedValue(height*0.8);
    const rotation = useSharedValue(0)
 
@@ -21,7 +21,7 @@ const AnimatedBg = () => {
       }, []);
 
     return (
-        <View style={styles.pageContainer}>
+        <View style={[styles.pageContainer,{backgroundColor: props.backgroundColor}]}>
             <Animated.View style={[styles.animatedContainer1, animationStyle]} />
             <Animated.View style={[styles.animatedContainer2, animationStyle2]} />
         </View>

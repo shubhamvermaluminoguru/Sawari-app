@@ -4,7 +4,7 @@
  *
  * @format
  */
-import React, { useEffect } from 'react';
+import React, { useEffect, createContext, useState, useContext } from 'react';
 import { enableScreens } from 'react-native-screens';
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
 import type {PropsWithChildren} from 'react';
@@ -15,11 +15,8 @@ import {
   useColorScheme,
 } from 'react-native';
 
-import {
-  NavigationContainer,
-  DefaultTheme,
-} from '@react-navigation/native';
-
+import {NavigationContainer} from '@react-navigation/native';
+import {LightTheme, DarkTheme} from './src/styles/index';
 import BootSplash from 'react-native-bootsplash';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from './src/pages/SignIn'
@@ -37,14 +34,6 @@ import Geolocation from '@react-native-community/geolocation';
 import UpcomingRidesScreen from './src/pages/UpcomingRides'
 import ThemesScreen from './src/pages/Themes'
 
-const MyTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: 'rgb(255, 255, 255)',
-  },
-};
-
 Geolocation.setRNConfiguration({
   skipPermissionRequests: false,
   authorizationLevel: 'auto',
@@ -53,14 +42,38 @@ Geolocation.setRNConfiguration({
 });
 const Stack = createNativeStackNavigator();
 
+interface ThemeContextType {
+  selectTheme: (name:any) => void;
+  theme: any;
+}
+const ThemeContext = createContext<ThemeContextType | null>(null);
+
+export const useThemeContext = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('context must be used in the provider');
+  }
+  return context;
+};
+
+
 type SectionProps = PropsWithChildren<{
   title: string;}>;
 
 
 function App(): React.JSX.Element {
   navigator.geolocation = require('@react-native-community/geolocation');
+  const [theme, setTheme] = useState(DarkTheme); // 'light' or 'dark'
 
-  const theme = useColorScheme()
+  const selectTheme = (name) => {
+
+    if(name === 'Light') {
+      setTheme(LightTheme)
+    }else if(name==="Dark")
+      {
+        setTheme(DarkTheme)
+      }
+  };
 
   useEffect(() => {
     enableScreens(true)
@@ -70,11 +83,9 @@ function App(): React.JSX.Element {
   return (
     <Provider store={store}>
     <GestureHandlerRootView>
+    <ThemeContext.Provider value={{ theme, selectTheme }}>
     <SafeAreaView style={[{flex:1}]}>
-        <NavigationContainer 
-        onReady={() => BootSplash.hide({fade: true})} 
-        theme={MyTheme}
-         >
+        <NavigationContainer  onReady={() => BootSplash.hide({fade: true})} >
         <StatusBar
           barStyle={useColorScheme()==='dark' ? 'dark-content' : 'dark-content'}
           backgroundColor={'#fff'} 
@@ -97,7 +108,7 @@ function App(): React.JSX.Element {
           </Stack.Navigator>
         </NavigationContainer>
     </SafeAreaView>
-
+    </ThemeContext.Provider>
     </GestureHandlerRootView>
     </Provider>
   );
